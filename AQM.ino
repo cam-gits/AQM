@@ -1,9 +1,14 @@
-#include "gps.h"
-#include "hashing.h"
-#include "pins.h"
+#include "src/GPS.h"
+#include "src/hashing.h"
+#include "src/pins.h"
 
 void setup() {
   Serial.begin(115200);
+
+  if(gpsBegin() == false){
+    Serial.println("GPS Initialising");
+    while (1) delay (5000);
+  }
 
   const char *payload = "Test string for validation";
   
@@ -17,6 +22,11 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  GpsReading gps;
 
+  if (gpsRead(gps)){
+    Serial.printf("Fix: %.5f, %.5f\n", gps.lat, gps.lon);
+  }
+
+  delay(5000);
 }
