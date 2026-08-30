@@ -19,4 +19,6 @@ struct record {
     uint8_t hash[HASH_SIZE];
 };
 
+size_t searialiseRecord(const record &r, char *outbuf, size_t buff);
+
 #endif

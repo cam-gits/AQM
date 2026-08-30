@@ -20,10 +20,10 @@ void loop() {
   GpsReading gps;
 
   if (gpsRead(gps)){
-    Serial.printf("Latitude: %.5f, Longitude: %.5f\n", gps.lat, gps.lon);
-    Serial.printf("Hour: %d, Min: %d, Sec:%d\n", gps.hour, gps.min, gps.sec);
 
     record rec = {};
+    char hex[HASH_SIZE * 2 + 1];
+    char serialised[256];
 
     rec.lat = gps.lat;
     rec.lon = gps.lon;
@@ -35,21 +35,14 @@ void loop() {
     rec.sec = gps.sec;
     memcpy(rec.previousHash, lastRec.hash, HASH_SIZE);
 
-    char hex[HASH_SIZE * 2 + 1];
+    int serialLen = searialiseRecord(rec, serialised, sizeof(serialised));
+    
     hashToHex(rec.previousHash, hex);
 
-    Serial.printf("Record:\n");
-    Serial.println(hex);
-    Serial.println(rec.lat);
-    Serial.println(rec.lon);
-    Serial.println(rec.year);
-    Serial.println(rec.month);
-    Serial.println(rec.day);
-    Serial.println(rec.hour);
-    Serial.println(rec.min);
-    Serial.println(rec.sec);
+    Serial.print("Record:\n");
+    Serial.println(serialised);
 
-    hashRecord((uint8_t *)&rec, sizeof(rec) - sizeof(rec.hash), rec.hash);
+    hashRecord((uint8_t *)&serialised, serialLen, rec.hash);
     hashToHex(rec.hash, hex);
 
     Serial.print("\nHash: ");
