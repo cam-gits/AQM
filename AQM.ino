@@ -1,6 +1,9 @@
 #include "src/GPS.h"
 #include "src/hashing.h"
 #include "src/pins.h"
+#include "src/record.h"
+
+record lastRec = {};
 
 void setup() {
   Serial.begin(115200);
@@ -10,23 +13,36 @@ void setup() {
     while (1) delay (5000);
   }
 
-  const char *payload = "Test string for validation";
-  
-  uint8_t shaResult[HASH_SIZE];
-  hashRecord((const uint8_t *)payload, strlen(payload), shaResult);
-  char hex[HASH_SIZE * 2 + 1];
-  hashToHex(shaResult, hex);
-
-  Serial.print("Hash: ");
-  Serial.println(hex);
+  memcpy(lastRec.hash, GENESIS_HASH, HASH_SIZE);
 }
 
 void loop() {
   GpsReading gps;
 
   if (gpsRead(gps)){
-    Serial.printf("Fix: %.5f, %.5f\n", gps.lat, gps.lon);
-  }
+    Serial.printf("Latitude: %.5f, Longitude: %.5f\n", gps.lat, gps.lon);
 
+    record rec = {};
+
+    rec.lat = gps.lat;
+    rec.lon = gps.lon;
+    rec.year = gps.year;
+    rec.month = gps.month;
+    rec.day = gps.day;
+    rec.hour = gps.hour;
+    rec.min = gps.min;
+    rec.sec = gps.sec;
+    memcpy(rec.previousHash, lastRec.hash, HASH_SIZE);
+
+    hashRecord((uint8_t *)&rec, sizeof(rec) - sizeof(rec.hash), rec.hash);
+    char hex[HASH_SIZE * 2 + 1];
+    hashToHex(rec.hash, hex);
+
+    Serial.print("Hash: ");
+    Serial.println(hex);
+
+    lastRec = rec;
+  }
+  
   delay(5000);
 }
