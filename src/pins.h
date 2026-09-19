@@ -13,4 +13,7 @@
 #define SDMMC_CLK                   (38)
 #define SDMMC_DATA                  (40)
 
+//SEN55
+
+
 #endif

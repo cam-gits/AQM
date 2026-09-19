@@ -4,6 +4,7 @@
 #include "src/hashing.h"
 #include "src/pins.h"
 #include "src/record.h"
+#include "src/sen55.h"
 #include "src/storage.h"
 
 record lastRec = {};
@@ -18,6 +19,7 @@ void setup() {
 
   //SD to boot after GPS, needs to set working voltage after modem power cycle
   sdBegin();
+  senBegin();
 
   memcpy(lastRec.hash, GENESIS_HASH, HASH_SIZE);
 }
@@ -40,6 +42,14 @@ void loop() {
     rec.min = gps.min;
     rec.sec = gps.sec;
     memcpy(rec.previousHash, lastRec.hash, HASH_SIZE);
+
+    if (senRead(sen)){
+      rec.pm1p0 = sen.pm1p0;
+      rec.pm2p5 = sen.pm2p5;
+      rec.pm10p0 = sen.pm10p0;
+      rec.humidity = sen.humidity;
+      rec.temperature = sen.temperature;
+    }
 
     size_t jsonLen = serialiseRecordJson(rec, serialised, sizeof(serialised), false); hashRecord((uint8_t *)serialised, jsonLen, rec.hash);
 

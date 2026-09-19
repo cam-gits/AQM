@@ -15,6 +15,11 @@ size_t serialiseRecordJson(const record &r, char *outbuf, size_t buff, bool incl
   doc["lon"] = r.lon;
   doc["time"]  = timestamp;
   doc["prev"] = previousHex;
+  doc["pm1p0"] = r.pm1p0;
+  doc["pm2p5"] = r.pm2p5;
+  doc["pm10p0"] = r.pm10p0;
+  doc["humidity"] = r.humidity;
+  doc["temperature"] = r.temperature;
 
   if (includeHash) {
     char hashHex[HASH_SIZE * 2 + 1];
