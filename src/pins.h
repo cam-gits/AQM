@@ -9,11 +9,12 @@
 #define BOARD_MODEM_TXD_PIN  (5)
 
 //SD Reader
-#define SDMMC_CMD                   (39)
-#define SDMMC_CLK                   (38)
-#define SDMMC_DATA                  (40)
+#define SDMMC_CMD            (39)
+#define SDMMC_CLK            (38)
+#define SDMMC_DATA           (40)
 
 //SEN55
-
+#define SEN55_SDA            (1)
+#define SEN55_SCL            (2)
 
 #endif

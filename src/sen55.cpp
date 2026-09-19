@@ -6,7 +6,7 @@
 SensirionI2CSen5x sen5x;
 
 void senBegin() {
-  Wire.begin(1, 2);
+  Wire.begin(SEN55_SDA, SEN55_SCL);
   sen5x.begin(Wire);
   uint16_t error = sen5x.deviceReset();
 

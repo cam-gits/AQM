@@ -26,6 +26,7 @@ void setup() {
 
 void loop() {
   GpsReading gps;
+  Sen55Reading sen;
 
   if (gpsRead(gps)){
 

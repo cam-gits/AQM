@@ -18,6 +18,11 @@ struct record {
     int hour;
     int min;
     int sec;
+    float pm1p0;
+    float pm2p5;
+    float pm10p0;
+    float humidity;
+    float temperature;
     uint8_t hash[HASH_SIZE];
 };
 

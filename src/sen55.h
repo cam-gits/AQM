@@ -10,6 +10,7 @@ struct Sen55Reading {
     float temperature;
     float vocIndex;
     float noxIndex;
+    bool valid;
 };
 
 void senBegin();
