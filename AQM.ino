@@ -2,6 +2,7 @@
 #include "src/hashing.h"
 #include "src/pins.h"
 #include "src/record.h"
+#include "src/storage.h"
 
 record lastRec = {};
 
@@ -12,6 +13,9 @@ void setup() {
     Serial.println("GPS Initialising");
     while (1) delay (5000);
   }
+
+  //SD to boot after GPS, needs to set working voltage after modem power cycle
+  sdBegin();
 
   memcpy(lastRec.hash, GENESIS_HASH, HASH_SIZE);
 }

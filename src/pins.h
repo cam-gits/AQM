@@ -8,4 +8,9 @@
 #define BOARD_MODEM_RXD_PIN  (4)
 #define BOARD_MODEM_TXD_PIN  (5)
 
+//SD Reader
+#define SDMMC_CMD                   (39)
+#define SDMMC_CLK                   (38)
+#define SDMMC_DATA                  (40)
+
 #endif
