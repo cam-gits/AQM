@@ -3,8 +3,10 @@
 
 #include "hashing.h"
 #include <Arduino.h>
+#include <ArduinoJson.h>
 
 extern const uint8_t GENESIS_HASH[HASH_SIZE];
+static const char RECORD_PATH[] = "/aqm.jsonl";
 
 struct record {
     uint8_t previousHash[HASH_SIZE];
@@ -19,6 +21,6 @@ struct record {
     uint8_t hash[HASH_SIZE];
 };
 
-size_t searialiseRecord(const record &r, char *outbuf, size_t buff);
+size_t serialiseRecordJson(const record &r, char *outbuf, size_t buff, bool includeHash);
 
 #endif

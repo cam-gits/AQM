@@ -1,3 +1,5 @@
+#include <SD_MMC.h>
+
 #include "src/GPS.h"
 #include "src/hashing.h"
 #include "src/pins.h"
@@ -39,16 +41,16 @@ void loop() {
     rec.sec = gps.sec;
     memcpy(rec.previousHash, lastRec.hash, HASH_SIZE);
 
-    int serialLen = searialiseRecord(rec, serialised, sizeof(serialised));
-    
-    hashToHex(rec.previousHash, hex);
+    size_t jsonLen = serialiseRecordJson(rec, serialised, sizeof(serialised), false); hashRecord((uint8_t *)serialised, jsonLen, rec.hash);
 
-    Serial.print("Record:\n");
-    Serial.println(serialised);
+    char jsonForStorage[512];
+    serialiseRecordJson(rec, jsonForStorage, sizeof(jsonForStorage), true);
+    appendFile(SD_MMC, RECORD_PATH, jsonForStorage);
+    appendFile(SD_MMC, RECORD_PATH, "\n");
 
-    hashRecord((uint8_t *)&serialised, serialLen, rec.hash);
+    Serial.println(jsonForStorage);
+
     hashToHex(rec.hash, hex);
-
     Serial.print("\nHash: ");
     Serial.println(hex);
 

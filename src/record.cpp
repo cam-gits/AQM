@@ -2,12 +2,26 @@
 
 const uint8_t GENESIS_HASH[HASH_SIZE] = {0};
 
-size_t searialiseRecord(const record &r, char *outbuf, size_t buff) {
-  char previousHex[HASH_SIZE *2 + 1];
+size_t serialiseRecordJson(const record &r, char *outbuf, size_t buff, bool includeHash) {
+  char previousHex[HASH_SIZE * 2 + 1];
   hashToHex(r.previousHash, previousHex);
 
-  int readable = snprintf(outbuf, buff, "%.5f | %.5f | %02d-%02d-%04d | %02d:%02d:%02d | %s", r.lat, r.lon, r.day, r.month, r.year, r.hour, r.min, r.sec, previousHex);
+  char timestamp[24];
+  snprintf(timestamp, sizeof(timestamp), "%04d-%02d-%02dT%02d:%02d:%02dZ", r.year, r.month, r.day, r.hour, r.min, r.sec);
 
-  return (size_t)readable;
+  JsonDocument doc;
+
+  doc["lat"] = r.lat;
+  doc["lon"] = r.lon;
+  doc["time"]  = timestamp;
+  doc["prev"] = previousHex;
+
+  if (includeHash) {
+    char hashHex[HASH_SIZE * 2 + 1];
+    hashToHex(r.hash, hashHex);
+    doc["hash"] = hashHex;
+  }
+
+  return serializeJson(doc, outbuf, buff);
 
 }

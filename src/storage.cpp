@@ -1,4 +1,6 @@
 #include "storage.h"
+#include "pins.h"
+
 #include <Arduino.h>
 #include <FS.h>
 #include <SD_MMC.h>
