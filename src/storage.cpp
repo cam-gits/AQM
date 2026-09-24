@@ -24,6 +24,8 @@ void appendFile(fs::FS &fs, const char *path, const char *message)
     } else {
         Serial.println("Append failed");
     }
+
+    file.close();
 }
 
 void sdBegin(){
