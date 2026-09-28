@@ -11,5 +11,6 @@ with open("aqm.jsonl", "r") as file:
             print("match")
         else: 
             print("fail")
+            break
         print("Stored Hash: ", stored_hash)
         print("Computed Hash: ", string_hash)

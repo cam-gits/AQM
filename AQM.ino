@@ -21,7 +21,17 @@ void setup() {
   sdBegin();
   senBegin();
 
+  String imei = modem.getIMEI();
+  uint8_t imeiHash[HASH_SIZE];
+  hashRecord((uint8_t*)imei.c_str(), imei.length(), imeiHash);
+  char imeiHex[HASH_SIZE * 2 + 1];
+  hashToHex(imeiHash, imeiHex);
+  char deviceId[9];
+  strncpy(deviceId, imeiHex, 8);
+  deviceId[8] = '\0';
+
   memcpy(lastRec.hash, GENESIS_HASH, HASH_SIZE);
+  int seqCounter = 0;
 }
 
 void loop() {
@@ -32,8 +42,11 @@ void loop() {
 
     record rec = {};
     char hex[HASH_SIZE * 2 + 1];
-    char serialised[256];
+    char serialised[512];
 
+    strcpy(rec.id, deviceId);
+    rec.seq = ++seqCounter;
+    red.id = ;
     rec.lat = gps.lat;
     rec.lon = gps.lon;
     rec.year = gps.year;
