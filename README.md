@@ -83,8 +83,8 @@ Air quality data collection which is affordable and accessible as a community mo
 Each record contains location, datetime, PM readings, temperature and humidity and is stored in json: 
 
 ```json
-{"lat":34.101692,"lon":-118.342979,"time":"2026-09-19T12:42:19Z","prev":"bfe7df29...",
-    "pm1p0":12.3,"pm2p5":18.7,"pm10p0":25.1,"humidity":62.4,"temperature":19.8,"hash":"a1b2c3d4..."}
+{"seq":107,"id":"a1b2c3d4","lat":34.101692,"lon":-118.342979,"time":"2026-10-01T16:55:47Z",
+     "pm1p0":2.4,"pm2p5":3.6,"pm10p0":4.9,"humidity":60.61,"temperature":21.275,"prev":"576c1...","hash":"..."}
 ```
 The records are hashed and linked in a chain to provide tamper evidence across all records:
 
