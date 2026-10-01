@@ -11,7 +11,7 @@ static const char RECORD_PATH[] = "/aqm.jsonl";
 struct record {
     uint8_t previousHash[HASH_SIZE];
     int seq;
-    char id[8];
+    char id[9];
     float lat;
     float lon;
     int year;

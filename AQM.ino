@@ -1,3 +1,7 @@
+#define TINY_GSM_RX_BUFFER 1024
+#define SerialAT Serial1
+#define TINY_GSM_MODEM_SIM7080
+
 #include <SD_MMC.h>
 #include <TinyGsmClient.h>
 
@@ -8,13 +12,9 @@
 #include "src/sen55.h"
 #include "src/storage.h"
 
-#define TINY_GSM_RX_BUFFER 1024
-#define SerialAT Serial1
-#define TINY_GSM_MODEM_SIM7080
-
 record lastRec = {};
 int seqCounter = 0;
-char deviceId[8] = {0}; 
+char deviceId[9] = {0}; 
 TinyGsm modem(SerialAT);
 
 void setup() {
