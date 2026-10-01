@@ -1,4 +1,5 @@
 #include <SD_MMC.h>
+#include <TinyGsmClient.h>
 
 #include "src/GPS.h"
 #include "src/hashing.h"
@@ -7,7 +8,14 @@
 #include "src/sen55.h"
 #include "src/storage.h"
 
+#define TINY_GSM_RX_BUFFER 1024
+#define SerialAT Serial1
+#define TINY_GSM_MODEM_SIM7080
+
 record lastRec = {};
+int seqCounter = 0;
+char deviceId[8] = {0}; 
+TinyGsm modem(SerialAT);
 
 void setup() {
   Serial.begin(115200);
@@ -21,17 +29,15 @@ void setup() {
   sdBegin();
   senBegin();
 
+  //Device ID generation
   String imei = modem.getIMEI();
   uint8_t imeiHash[HASH_SIZE];
   hashRecord((uint8_t*)imei.c_str(), imei.length(), imeiHash);
   char imeiHex[HASH_SIZE * 2 + 1];
   hashToHex(imeiHash, imeiHex);
-  char deviceId[9];
   strncpy(deviceId, imeiHex, 8);
-  deviceId[8] = '\0';
 
   memcpy(lastRec.hash, GENESIS_HASH, HASH_SIZE);
-  int seqCounter = 0;
 }
 
 void loop() {
@@ -46,7 +52,6 @@ void loop() {
 
     strcpy(rec.id, deviceId);
     rec.seq = ++seqCounter;
-    red.id = ;
     rec.lat = gps.lat;
     rec.lon = gps.lon;
     rec.year = gps.year;
